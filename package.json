@@ -1,0 +1,24 @@
+{
+  "name":"API",
+  "version": "1.0.0",
+  "description": "Minha primeira API",
+  "homepage": "https://github.com/CarlosFortunato1234/API#readme",
+  "bugs": {
+    "url": "https://github.com/CarlosFortunato1234/API/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosFortunato1234/API.git"
+  },
+  "license": "ISC",
+  "author": "Carlos Daniel",
+  "type": "module",
+  "main": "exemplo.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
