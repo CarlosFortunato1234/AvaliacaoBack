@@ -80,10 +80,6 @@ app.delete("/api/v1/tarefa/:id", (req, res) => {
   res.status(200).send({ message: "Tarefa excluída com sucesso!" })
 })
  
-app.listen(3004, () => {
-  console.log(`Servidor rodando em http://localhost:3004`);
-});
-
 //alterar entre concluida e não concluida
 
 app.put ("/api/v1/tarefas/:id/concluido", (req, res) => {
@@ -115,3 +111,6 @@ app.get("/api/v1/tarefa/:id/pendente", (req, res) => {
     res.send({ message: "Essa tarefa já foi concluída!" })
   }
 })
+app.listen(3004, () => {
+  console.log(`Servidor rodando em http://localhost:3004`);
+});
