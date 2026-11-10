@@ -1,14 +1,14 @@
 {
-  "name":"API",
+  "name":"AvaliacaoBack",
   "version": "1.0.0",
-  "description": "Minha primeira API",
-  "homepage": "https://github.com/CarlosFortunato1234/API#readme",
+  "description": "Minha primeira AvaliacaoBack",
+  "homepage": "https://github.com/CarlosFortunato1234/AvaliacaoBack#readme",
   "bugs": {
-    "url": "https://github.com/CarlosFortunato1234/API/issues"
+    "url": "https://github.com/CarlosFortunato1234/AvaliacaoBack/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CarlosFortunato1234/API.git"
+    "url": "git+https://github.com/CarlosFortunato1234/AvaliacaoBack.git"
   },
   "license": "ISC",
   "author": "Carlos Daniel",

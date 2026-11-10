@@ -5,77 +5,113 @@ const app = express();
 app.use(express.json ())
  
 //C
-app.post("/api/v1/livro", (req, res) => {
- //const id = req.body.id
-// const cpf = req.body.cpf
-// const email = req.body.email
- const {id, nomelivro, autor} = req.body
+app.post("/api/v1/tarefa", (req, res) => {
 
-   if( !id || !nomelivro || !autor){ 
+const {id, descricao, data, concluido} = req.body
+
+   if(  !id || !descricao || !data || !concluido){ 
 //avisar que é pra enviar tudo
- res.send ({ message: "Envie todas as informações para o cadastro!"})
+ res.send ({ message: "Envie todas as informações para criar a lista de tarefas!"})
  return
    }
     
   //cadastrar no banco
-  db.push({ id, nomelivro, autor}) 
-  res.send ({ message: "Livro cadastrado com sucesso"})
+  db.push({ id,descricao, data, concluido}) 
+  res.status(201).send({ message: "Tarefa cadastrado com sucesso"})
+  
 })
 //R
-app.get("/api/v1/livro", (req, res) => {
+app.get("/api/v1/tarefa", (req, res) => {
 
-res.send (db);
+res.status(200).send(db);
 
 
 })
 
-app.get("/api/v1/livro/:id", (req, res) => {
+app.get("/api/v1/tarefa/:id", (req, res) => {
 
 const id = Number(req.params.id)
-const livro = db.find(item => item.id === id)
-
-res.send (livro);
+const tarefa = db.find(item => item.id === id)
+if (!tarefa) {
+  returnres.status(404).send({
+    message: "Tarefa não encontrada!"
+  })
+}
+res.status(200).send (tarefa);
 
 
 })
 //U
-app.put("/api/v1/livro/:id", (req, res) => {
+//aqui eu peguei um exemplo de atualizar descrição e data.
+app.put("/api/v1/tarefa/:id", (req, res) => {
   const id = Number(req.params.id)
-  const livro = db.find (item => item.id === id)
+  const tarefa = db.find (item => item.id === id)
 
-  if (!livro) {
-    res.send({message: "Livro não encontrado!"})
+  if (!tarefa) {
+    res.status(404).send({message: "tarefa não encontrada!"})
     return
   }
-   const { nomelivro, autor} = req.body || {}
+   const { descricao, data} = req.body || {}
 
-   if (!nomelivro || !autor) {
-    res.send ({message: "Envie o nome do livro e o autor!"})
+   if (!descricao || !data) {
+    res.status(400).send ({message: "Envie a descricao e a data!"})
     return
    }
-   livro.nomelivro = nomelivro
-   livro.autor = autor
+   tarefa.descricao = descricao
+   tarefa.data = data
 
-   res.send ({message: "Livro atualizado com sucesso! "})
+   res.status(200).send ({message: "Tarefa atualizada com sucesso! "})
 
 
 
 })
 //D
 // D - Excluir um livro
-app.delete("/api/v1/livro/:id", (req, res) => {
+app.delete("/api/v1/tarefa/:id", (req, res) => {
   const id = Number(req.params.id)
   const index = db.findIndex(item => item.id === id)
 
   if (index === -1) {
-    return res.status(404).send({ message: "Livro não encontrado!" })
+    return res.status(404).send({ message: "Tarefa não encontrada!" })
   }
 
   db.splice(index, 1)
 
-  res.send({ message: "Livro excluído com sucesso!" })
+  res.status(200).send({ message: "Tarefa excluída com sucesso!" })
 })
  
 app.listen(3004, () => {
   console.log(`Servidor rodando em http://localhost:3004`);
 });
+
+//alterar entre concluida e não concluida
+
+app.put ("/api/v1/tarefas/:id/concluido", (req, res) => {
+    const id = Number (req.params.id)
+    const tarefa= db.find (item => item.id == id)
+
+    if(!tarefa) {
+      return res.send ({ message: "Tarefa não encontrada!" })
+    }
+
+    tarefa.concluido = ! tarefa.concluido
+
+    res.send(tarefa)
+})
+//consultar
+
+// Mostrar a tarefa pelo ID somente se estiver pendente
+app.get("/api/v1/tarefa/:id/pendente", (req, res) => {
+  const id = Number(req.params.id)
+  const tarefa = db.find(item => item.id === id)
+
+  if (!tarefa) {
+    return res.send({ message: "Tarefa não encontrada!" })
+  }
+
+  if (tarefa.concluido == false) {
+    res.send(tarefa)
+  } else {
+    res.send({ message: "Essa tarefa já foi concluída!" })
+  }
+})
